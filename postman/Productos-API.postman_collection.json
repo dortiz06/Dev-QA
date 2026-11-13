@@ -1,0 +1,152 @@
+{
+  "info": {
+    "name": "Microservicio de Productos",
+    "description": "Colección de endpoints CRUD y casos de error para el microservicio de productos.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "productoId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Crear producto (201)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "  const json = pm.response.json();",
+              "  pm.collectionVariables.set('productoId', json.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Laptop Gamer\",\n  \"codigo\": \"LAP001\",\n  \"descripcion\": \"Equipo de alto rendimiento\",\n  \"precio\": 18999.50,\n  \"stock\": 10\n}"
+        },
+        "url": "{{baseUrl}}/api/productos"
+      }
+    },
+    {
+      "name": "Crear producto - validación (400)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"ab\",\n  \"codigo\": \"LAP-001\",\n  \"descripcion\": \"Invalido\",\n  \"precio\": -10,\n  \"stock\": -1\n}"
+        },
+        "url": "{{baseUrl}}/api/productos"
+      }
+    },
+    {
+      "name": "Crear producto - código duplicado (409)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Laptop Duplicada\",\n  \"codigo\": \"LAP001\",\n  \"descripcion\": \"Mismo codigo\",\n  \"precio\": 1000,\n  \"stock\": 1\n}"
+        },
+        "url": "{{baseUrl}}/api/productos"
+      }
+    },
+    {
+      "name": "Listar productos (200)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/productos"
+      }
+    },
+    {
+      "name": "Obtener producto por id (200)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/productos/{{productoId}}"
+      }
+    },
+    {
+      "name": "Obtener producto - no encontrado (404)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/productos/inexistente"
+      }
+    },
+    {
+      "name": "Actualizar producto (200)",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Laptop Gamer Pro\",\n  \"codigo\": \"LAP001\",\n  \"descripcion\": \"Actualizado\",\n  \"precio\": 20999.99,\n  \"stock\": 8\n}"
+        },
+        "url": "{{baseUrl}}/api/productos/{{productoId}}"
+      }
+    },
+    {
+      "name": "Actualizar producto - validación (400)",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"x\",\n  \"codigo\": \"LAP001\",\n  \"descripcion\": \"Invalido\",\n  \"precio\": 0,\n  \"stock\": -5\n}"
+        },
+        "url": "{{baseUrl}}/api/productos/{{productoId}}"
+      }
+    },
+    {
+      "name": "Actualizar producto - no encontrado (404)",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Laptop Gamer\",\n  \"codigo\": \"LAP001\",\n  \"descripcion\": \"No existe\",\n  \"precio\": 18999.50,\n  \"stock\": 10\n}"
+        },
+        "url": "{{baseUrl}}/api/productos/inexistente"
+      }
+    },
+    {
+      "name": "Actualizar producto - código duplicado (409)",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Otro producto\",\n  \"codigo\": \"LAP001\",\n  \"descripcion\": \"Conflicto de codigo\",\n  \"precio\": 500,\n  \"stock\": 2\n}"
+        },
+        "url": "{{baseUrl}}/api/productos/{{productoId}}"
+      }
+    },
+    {
+      "name": "Eliminar producto (204)",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/productos/{{productoId}}"
+      }
+    },
+    {
+      "name": "Eliminar producto - no encontrado (404)",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/productos/inexistente"
+      }
+    }
+  ]
+}
